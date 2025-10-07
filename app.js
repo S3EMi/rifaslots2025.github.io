@@ -284,15 +284,80 @@ function setupEventListeners() {
     DOM_ELEMENTS.customerPhone.addEventListener('input', formatPhone);
 }
 
+// ========== FUNÇÕES PARA ESCOLHER NÚMEROS ALEATÓRIOS ==========
+window.escolherQuantNum = function(quantidade) {
+    if (!quantidade || quantidade < 1) {
+        console.error('❌ Erro: Digite quantos números você quer. Exemplo: escolherQuantNum(50)');
+        return;
+    }
+
+    // Pegar todos os números disponíveis
+    const todosNumeros = Array.from(
+        {length: RIFA_CONFIG.END_NUMBER - RIFA_CONFIG.START_NUMBER + 1}, 
+        (_, i) => RIFA_CONFIG.START_NUMBER + i
+    );
+    
+    const disponiveis = todosNumeros.filter(num => 
+        !APP_STATE.soldNumbers.includes(num) && !APP_STATE.reservedNumbers.includes(num)
+    );
+
+    if (disponiveis.length === 0) {
+        console.error('❌ Não tem nenhum número disponível!');
+        return;
+    }
+
+    if (quantidade > disponiveis.length) {
+        console.warn(`⚠ Aviso: Você pediu ${quantidade} números, mas só tem ${disponiveis.length} disponíveis.`);
+        quantidade = disponiveis.length;
+    }
+
+    // Embaralhar e pegar a quantidade pedida
+    const embaralhados = [...disponiveis].sort(() => Math.random() - 0.5);
+    const escolhidos = embaralhados.slice(0, quantidade).sort((a, b) => a - b);
+
+    console.log(`🎯 ${quantidade} números escolhidos aleatoriamente:`);
+    console.log(escolhidos);
+    console.log(`💰 Valor total: R$ ${(quantidade * RIFA_CONFIG.PRICE_PER_NUMBER).toFixed(2)}`);
+    
+    return escolhidos;
+}
+
+window.escolherEVender = async function(quantidade) {
+    if (!quantidade || quantidade < 1) {
+        console.error('❌ Erro: Digite quantos números você quer vender. Exemplo: escolherEVender(50)');
+        return;
+    }
+
+    // Escolher os números
+    const numeros = window.escolherQuantNum(quantidade);
+    
+    if (!numeros || numeros.length === 0) {
+        return;
+    }
+
+    // Marcar como vendido
+    await window.markNumbersAsSold(numeros);
+    
+    console.log(`✅ VENDA CONFIRMADA!`);
+    console.log(`🔢 Números vendidos: ${numeros.join(', ')}`);
+    console.log(`💰 Valor recebido: R$ ${(quantidade * RIFA_CONFIG.PRICE_PER_NUMBER).toFixed(2)}`);
+    console.log(`📋 Total de números vendidos: ${APP_STATE.soldNumbers.length}`);
+    
+    return numeros;
+}
+
 // ========== COMANDOS ADMINISTRATIVOS ==========
 function setupAdminCommands() {
     console.log(`=== COMANDOS ADMIN RIFA L.O.T.S. ===`);
-    console.log(`markNumbersAsSold([1, 2, 3]) - Marcar números como vendidos`);
-    console.log(`markNumbersAsReserved([4, 5, 6]) - Marcar números como reservados`);
-    console.log(`freeNumbers([1, 2, 3]) - Liberar números`);
-    console.log(`viewAllSold() - Ver números vendidos`);
-    console.log(`viewAllReserved() - Ver números reservados`);
-    console.log(`viewAllAvailable() - Ver números disponíveis`);
+    console.log(`escolherQuantNum(50) - Escolher X números aleatórios`);
+    console.log(`escolherEVender(50) - Escolher e vender X números`);
+    console.log(`---`);
+    console.log(`markNumbersAsSold([1,2,3]) - Marcar números como vendidos`);
+    console.log(`markNumbersAsReserved([4,5,6]) - Marcar como reservados`);
+    console.log(`freeNumbers([1,2,3]) - Liberar números`);
+    console.log(`viewAllSold() - Ver vendidos`);
+    console.log(`viewAllReserved() - Ver reservados`);
+    console.log(`viewAllAvailable() - Ver disponíveis`);
     console.log(`cleanExpiredReservations() - Limpar reservas expiradas`);
     console.log(`resetAllData() - Resetar dados`);
     console.log(`exportData() - Exportar dados`);
@@ -440,72 +505,5 @@ window.importData = async function(jsonData) {
     }
 }
 
-// ========== FUNÇÃO SIMPLES PARA ESCOLHER NÚMEROS ==========
-window.escolherQuantNum = function(quantidade) {
-    if (!quantidade || quantidade < 1) {
-        console.error('❌ Erro: Digite quantos números você quer. Exemplo: escolherQuantNum(50)');
-        return;
-    }
-
-    // Pegar todos os números disponíveis
-    const todosNumeros = Array.from(
-        {length: RIFA_CONFIG.END_NUMBER - RIFA_CONFIG.START_NUMBER + 1}, 
-        (_, i) => RIFA_CONFIG.START_NUMBER + i
-    );
-    
-    const disponiveis = todosNumeros.filter(num => 
-        !APP_STATE.soldNumbers.includes(num) && !APP_STATE.reservedNumbers.includes(num)
-    );
-
-    if (disponiveis.length === 0) {
-        console.error('❌ Não tem nenhum número disponível!');
-        return;
-    }
-
-    if (quantidade > disponiveis.length) {
-        console.warn(`⚠ Aviso: Você pediu ${quantidade} números, mas só tem ${disponiveis.length} disponíveis.`);
-        quantidade = disponiveis.length;
-    }
-
-    // Embaralhar e pegar a quantidade pedida
-    const embaralhados = [...disponiveis].sort(() => Math.random() - 0.5);
-    const escolhidos = embaralhados.slice(0, quantidade).sort((a, b) => a - b);
-
-    console.log(`🎯 ${quantidade} números escolhidos aleatoriamente:`);
-    console.log(escolhidos);
-    console.log(`💰 Valor total: R$ ${(quantidade * RIFA_CONFIG.PRICE_PER_NUMBER).toFixed(2)}`);
-    
-    return escolhidos;
-}
-
-// ========== FUNÇÃO PARA ESCOLHER E MARCAR COMO VENDIDO ==========
-window.escolherEVender = async function(quantidade) {
-    if (!quantidade || quantidade < 1) {
-        console.error('❌ Erro: Digite quantos números você quer vender. Exemplo: escolherEVender(50)');
-        return;
-    }
-
-    // Escolher os números
-    const numeros = window.escolherQuantNum(quantidade);
-    
-    if (!numeros || numeros.length === 0) {
-        return;
-    }
-
-    // Marcar como vendido
-    await window.markNumbersAsSold(numeros);
-    
-    console.log(`✅ VENDA CONFIRMADA!`);
-    console.log(`🔢 Números vendidos: ${numeros.join(', ')}`);
-    console.log(`💰 Valor recebido: R$ ${(quantidade * RIFA_CONFIG.PRICE_PER_NUMBER).toFixed(2)}`);
-    console.log(`📋 Total de números vendidos: ${APP_STATE.soldNumbers.length}`);
-    
-    return numeros;
-}
-
 // ========== INICIAR APLICAÇÃO ==========
-
 document.addEventListener('DOMContentLoaded', init);
-
-
-
