@@ -478,6 +478,19 @@ window.escolherQuantNum = function(quantidade) {
     return escolhidos;
 }
 
+// Função que já reserva os números automaticamente
+window.escolherEReservar = async function(quantidade, nomeCliente = "Cliente") {
+    const numeros = escolherQuantNum(quantidade);
+    
+    if (numeros && numeros.length > 0) {
+        await window.markNumbersAsReserved(numeros);
+        console.log(`✅ Números reservados para: ${nomeCliente}`);
+    }
+    
+    return numeros;
+}
+
 // ========== INICIAR APLICAÇÃO ==========
 
 document.addEventListener('DOMContentLoaded', init);
+
