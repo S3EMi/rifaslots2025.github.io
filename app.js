@@ -440,5 +440,44 @@ window.importData = async function(jsonData) {
     }
 }
 
+// ========== FUNÇÃO SIMPLES PARA ESCOLHER NÚMEROS ==========
+window.escolherQuantNum = function(quantidade) {
+    if (!quantidade || quantidade < 1) {
+        console.error('❌ Erro: Digite quantos números você quer. Exemplo: escolherQuantNum(50)');
+        return;
+    }
+
+    // Pegar todos os números disponíveis
+    const todosNumeros = Array.from(
+        {length: RIFA_CONFIG.END_NUMBER - RIFA_CONFIG.START_NUMBER + 1}, 
+        (_, i) => RIFA_CONFIG.START_NUMBER + i
+    );
+    
+    const disponiveis = todosNumeros.filter(num => 
+        !APP_STATE.soldNumbers.includes(num) && !APP_STATE.reservedNumbers.includes(num)
+    );
+
+    if (disponiveis.length === 0) {
+        console.error('❌ Não tem nenhum número disponível!');
+        return;
+    }
+
+    if (quantidade > disponiveis.length) {
+        console.warn(`⚠ Aviso: Você pediu ${quantidade} números, mas só tem ${disponiveis.length} disponíveis.`);
+        quantidade = disponiveis.length;
+    }
+
+    // Embaralhar e pegar a quantidade pedida
+    const embaralhados = [...disponiveis].sort(() => Math.random() - 0.5);
+    const escolhidos = embaralhados.slice(0, quantidade).sort((a, b) => a - b);
+
+    console.log(`🎯 ${quantidade} números escolhidos aleatoriamente:`);
+    console.log(escolhidos);
+    console.log(`💰 Valor total: R$ ${(quantidade * RIFA_CONFIG.PRICE_PER_NUMBER).toFixed(2)}`);
+    
+    return escolhidos;
+}
+
 // ========== INICIAR APLICAÇÃO ==========
+
 document.addEventListener('DOMContentLoaded', init);
