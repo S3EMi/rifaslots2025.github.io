@@ -478,14 +478,27 @@ window.escolherQuantNum = function(quantidade) {
     return escolhidos;
 }
 
-// Função que já reserva os números automaticamente
-window.escolherEReservar = async function(quantidade, nomeCliente = "Cliente") {
-    const numeros = escolherQuantNum(quantidade);
-    
-    if (numeros && numeros.length > 0) {
-        await window.markNumbersAsReserved(numeros);
-        console.log(`✅ Números reservados para: ${nomeCliente}`);
+// ========== FUNÇÃO PARA ESCOLHER E MARCAR COMO VENDIDO ==========
+window.escolherEVender = async function(quantidade) {
+    if (!quantidade || quantidade < 1) {
+        console.error('❌ Erro: Digite quantos números você quer vender. Exemplo: escolherEVender(50)');
+        return;
     }
+
+    // Escolher os números
+    const numeros = window.escolherQuantNum(quantidade);
+    
+    if (!numeros || numeros.length === 0) {
+        return;
+    }
+
+    // Marcar como vendido
+    await window.markNumbersAsSold(numeros);
+    
+    console.log(`✅ VENDA CONFIRMADA!`);
+    console.log(`🔢 Números vendidos: ${numeros.join(', ')}`);
+    console.log(`💰 Valor recebido: R$ ${(quantidade * RIFA_CONFIG.PRICE_PER_NUMBER).toFixed(2)}`);
+    console.log(`📋 Total de números vendidos: ${APP_STATE.soldNumbers.length}`);
     
     return numeros;
 }
@@ -493,5 +506,6 @@ window.escolherEReservar = async function(quantidade, nomeCliente = "Cliente") {
 // ========== INICIAR APLICAÇÃO ==========
 
 document.addEventListener('DOMContentLoaded', init);
+
 
 
