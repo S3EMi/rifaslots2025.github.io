@@ -494,3 +494,4 @@ window.escolherEReservar = async function(quantidade, nomeCliente = "Cliente") {
 
 document.addEventListener('DOMContentLoaded', init);
 
+
