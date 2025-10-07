@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rifas L.O.T.S. Aerodesign - Sorteio 18/10</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1E3A8A; /* Azul escuro */
+            --primary-light: #3B82F6; /* Azul médio */
+            --secondary: #FBBF24; /* Amarelo */
+            --secondary-dark: #F59E0B; /* Amarelo escuro */
+            --light: #FFFFFF; /* Branco */
+            --dark: #1E293B; /* Azul quase preto */
+            --gray: #E5E7EB; /* Cinza claro */
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8fafc;
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: var(--light);
+            padding: 1.5rem 0;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--secondary);
+        }
+        
+        .header-text h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header-text p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .countdown {
+            background: var(--secondary);
+            color: var(--dark);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: bold;
+            margin-top: 1rem;
+            display: inline-block;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        .prizes {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+        
+        .prize-card {
+            background: var(--light);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            flex: 1;
+            min-width: 220px;
+            max-width: 300px;
+            border-top: 5px solid var(--secondary);
+        }
+        
+        .prize-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+        
+        .prize-card .amount {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--secondary-dark);
+        }
+        
+        .prize-card .trophy {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+        
+        .numbers-section {
+            background: var(--light);
+            border-radius: 15px;
+            padding: 2.5rem;
+            margin: 3rem 0;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .section-title {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+        
+        .section-subtitle {
+            color: var(--dark);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: var(--gray);
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 5px;
+            width: 30%;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-text {
+            text-align: center;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .numbers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(65px, 1fr));
+            gap: 12px;
+            margin: 1.5rem 0;
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 15px;
+            border: 1px solid var(--gray);
+            border-radius: 10px;
+        }
+        
+        .number {
+            width: 65px;
+            height: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--gray);
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            background-color: var(--light);
+            font-size: 1.1rem;
+            transition: background-color 0.2s ease;
+        }
+        
+        .number:hover {
+            border-color: var(--primary-light);
+        }
+        
+        .number.selected {
+            background-color: var(--secondary);
+            color: var(--dark);
+            border-color: var(--secondary);
+        }
+        
+        .number.sold {
+            background-color: var(--primary-light);
+            color: var(--light);
+            cursor: not-allowed;
+        }
+        
+        .number.reserved {
+            background-color: var(--primary);
+            color: var(--light);
+            cursor: not-allowed;
+        }
+        
+        .selection-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            border-radius: 10px;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .selection-info p {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        
+        .selection-info .total {
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: var(--secondary);
+        }
+        
+        .customer-info {
+            background: var(--light);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .customer-info h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: var(--dark);
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--gray);
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .payment-info {
+            background: var(--light);
+            border-radius: 15px;
+            padding: 2.5rem;
+            margin: 3rem 0;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .payment-info h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+        
+        .payment-info p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .pix-info {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 10px;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .pix-details {
+            flex: 1;
+        }
+        
+        .pix-details p {
+            margin-bottom: 0.8rem;
+        }
+        
+        .pix-key {
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: var(--secondary);
+            background: rgba(255,255,255,0.1);
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            background-color: var(--primary);
+            color: var(--light);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-light);
+        }
+        
+        .btn-whatsapp {
+            background-color: #25D366;
+        }
+        
+        .btn-whatsapp:hover {
+            background-color: #128C7E;
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: var(--dark);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--secondary-dark);
+        }
+        
+        .btn-large {
+            padding: 18px 36px;
+            font-size: 1.3rem;
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        .btn:disabled {
+            background-color: #9CA3AF;
+            cursor: not-allowed;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: rgba(255,255,255,0.8);
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+        
+        .available {
+            background-color: var(--light);
+            border: 2px solid var(--gray);
+        }
+        
+        .selected-legend {
+            background-color: var(--secondary);
+        }
+        
+        .sold-legend {
+            background-color: var(--primary-light);
+        }
+        
+        .reserved-legend {
+            background-color: var(--primary);
+        }
+        
+        .steps {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .step {
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+        }
+        
+        .step-number {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .step h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: var(--light);
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 3rem;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .social-links a {
+            color: var(--light);
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            color: var(--secondary);
+        }
+        
+        @media (max-width: 768px) {
+            .numbers-grid {
+                grid-template-columns: repeat(auto-fill, minmax(55px, 1fr));
+            }
+            
+            .number {
+                width: 55px;
+                height: 55px;
+            }
+            
+            .pix-info {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .header-content {
+                flex-direction: column;
+            }
+            
+            .selection-info {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsPURFQgtEovPz14CA4q16d53_Yunj0taX0Q&s" alt="Logo L.O.T.S. Aerodesign" class="logo">
+                <div class="header-text">
+                    <h1>L.O.T.S. Aerodesign</h1>
+                    <p>Rifas Online - Sorteio em</p>
+                    <div class="countdown" id="countdown">18 de Outubro</div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <section class="prizes">
+            <div class="prize-card">
+                <div class="trophy">🥇</div>
+                <h3>1º Prêmio</h3>
+                <div class="amount">R$ 300,00</div>
+            </div>
+            <div class="prize-card">
+                <div class="trophy">🥈</div>
+                <h3>2º Prêmio</h3>
+                <div class="amount">R$ 150,00</div>
+            </div>
+            <div class="prize-card">
+                <div class="trophy">🥉</div>
+                <h3>3º Prêmio</h3>
+                <div class="amount">R$ 50,00</div>
+            </div>
+        </section>
+        
+        <section class="numbers-section">
+            <h2 class="section-title">Escolha seus números da sorte!</h2>
+            <p class="section-subtitle">Apenas R$ 1,00 por número! Quanto mais números você comprar, maiores suas chances de ganhar!</p>
+            
+            <div class="progress-bar">
+                <div class="progress" id="progressBar"></div>
+            </div>
+            <div class="progress-text" id="progressText">30% dos números já foram vendidos!</div>
+            
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color available"></div>
+                    <span>Disponível</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color selected-legend"></div>
+                    <span>Selecionado</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color reserved-legend"></div>
+                    <span>Reservado</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color sold-legend"></div>
+                    <span>Vendido</span>
+                </div>
+            </div>
+            
+            <div class="numbers-grid" id="numbersGrid">
+                <!-- Os números serão gerados via JavaScript -->
+            </div>
+            
+            <div class="selection-info">
+                <p>Números selecionados: <span id="selectedCount">0</span></p>
+                <p>Valor total: <span class="total">R$ <span id="totalValue">0,00</span></span></p>
+                <button class="btn btn-secondary" id="clearSelection">Limpar Seleção</button>
+            </div>
+            
+            <div class="customer-info">
+                <h3>Seus dados</h3>
+                <div class="form-group">
+                    <label for="customerName">Nome completo</label>
+                    <input type="text" id="customerName" placeholder="Digite seu nome completo">
+                </div>
+                <div class="form-group">
+                    <label for="customerPhone">Telefone</label>
+                    <input type="tel" id="customerPhone" placeholder="(00) 00000-0000">
+                </div>
+            </div>
+            
+            <button class="btn btn-whatsapp btn-large btn-block" id="buyButton">
+                <i class="fab fa-whatsapp"></i> Comprar Rifas Selecionadas
+            </button>
+        </section>
+        
+        <section class="payment-info">
+            <h2 class="section-title">Como comprar sua rifa</h2>
+            <p>É rápido e fácil garantir seus números da sorte por apenas R$ 1,00 cada!</p>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Selecione</h3>
+                    <p>Escolha seus números preferidos na lista acima</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Pague</h3>
+                    <p>Realize o pagamento via PIX para o número indicado</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Confirme</h3>
+                    <p>Envie o comprovante pelo WhatsApp e aguarde o sorteio</p>
+                </div>
+            </div>
+            
+            <div class="pix-info">
+                <div class="pix-details">
+                    <p><strong>Chave PIX:</strong></p>
+                    <p class="pix-key">31 9 9658-1509</p>
+                    <p><strong>Valor a pagar:</strong> R$ <span id="pixValue">0,00</span></p>
+                </div>
+            </div>
+            
+            <p style="text-align: center; font-weight: bold;">Envie o comprovante para o WhatsApp após o pagamento para confirmar sua compra!</p>
+        </section>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <h3>L.O.T.S. Aerodesign</h3>
+            <p>Apoie nossa equipe e concorra a prêmios incríveis!</p>
+            
+            <div class="social-links">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-whatsapp"></i></a>
+            </div>
+            
+            <p>Dúvidas? Entre em contato: (31) 9 9658-1509</p>
+            <p>&copy; 2023 - Todos os direitos reservados</p>
+        </div>
+    </footer>
+
+    <script>
+        // Configurações
+        const START_NUMBER = 1;
+        const END_NUMBER = 350;
+        const PRICE_PER_NUMBER = 1; // Valor por número - R$ 1,00
+        const PIX_KEY = "31 9 9658-1509";
+        const WHATSAPP_NUMBER = "553196581509";
+        const RESERVATION_EXPIRY_MINUTES = 30; // Tempo de expiração das reservas
+        
+        // Elementos do DOM
+        const numbersGrid = document.getElementById('numbersGrid');
+        const selectedCount = document.getElementById('selectedCount');
+        const totalValue = document.getElementById('totalValue');
+        const pixValue = document.getElementById('pixValue');
+        const clearSelection = document.getElementById('clearSelection');
+        const buyButton = document.getElementById('buyButton');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const customerName = document.getElementById('customerName');
+        const customerPhone = document.getElementById('customerPhone');
+        
+        // Estado da aplicação
+        let selectedNumbers = [];
+        let soldNumbers = []; // Números já vendidos
+        let reservedNumbers = []; // Números reservados (aguardando pagamento)
+        let reservationTimestamps = {}; // Timestamps das reservas
+        
+        // Inicialização
+        function init() {
+            // Carregar dados salvos no localStorage
+            loadSavedData();
+            generateNumbers();
+            updateSelectionInfo();
+            updateProgressBar();
+            
+            // Verificar reservas expiradas
+            checkExpiredReservations();
+            
+            // Event listeners
+            clearSelection.addEventListener('click', clearAllSelection);
+            buyButton.addEventListener('click', processPurchase);
+            
+            // Validar campos de entrada
+            customerName.addEventListener('input', validateForm);
+            customerPhone.addEventListener('input', validateForm);
+            
+            // Formatar telefone
+            customerPhone.addEventListener('input', formatPhone);
+            
+            // Inicializar comandos do admin
+            setupAdminCommands();
+        }
+        
+        // Configurar comandos do administrador
+        function setupAdminCommands() {
+            console.log(`=== COMANDOS ADMIN RIFA L.O.T.S. ===`);
+            console.log(`markNumbersAsSold([1, 2, 3]) - Marcar números como vendidos`);
+            console.log(`markNumbersAsReserved([4, 5, 6]) - Marcar números como reservados`);
+            console.log(`freeNumbers([1, 2, 3]) - Liberar números (remover de vendidos/reservados)`);
+            console.log(`viewAllSold() - Ver todos os números vendidos`);
+            console.log(`viewAllReserved() - Ver todos os números reservados`);
+            console.log(`viewAllAvailable() - Ver todos os números disponíveis`);
+            console.log(`cleanExpiredReservations() - Limpar reservas expiradas`);
+            console.log(`resetAllData() - Resetar todos os dados (cuidado!)`);
+            console.log(`exportData() - Exportar dados para JSON`);
+            console.log(`importData(jsonData) - Importar dados de JSON`);
+            console.log(`==============================`);
+        }
+        
+        // Carregar dados salvos
+        function loadSavedData() {
+            const savedSoldNumbers = localStorage.getItem('rifaSoldNumbers');
+            const savedReservedNumbers = localStorage.getItem('rifaReservedNumbers');
+            const savedReservationTimestamps = localStorage.getItem('rifaReservationTimestamps');
+            
+            if (savedSoldNumbers) {
+                soldNumbers = JSON.parse(savedSoldNumbers);
+            }
+            
+            if (savedReservedNumbers) {
+                reservedNumbers = JSON.parse(savedReservedNumbers);
+            }
+            
+            if (savedReservationTimestamps) {
+                reservationTimestamps = JSON.parse(savedReservationTimestamps);
+            }
+        }
+        
+        // Salvar dados
+        function saveData() {
+            localStorage.setItem('rifaSoldNumbers', JSON.stringify(soldNumbers));
+            localStorage.setItem('rifaReservedNumbers', JSON.stringify(reservedNumbers));
+            localStorage.setItem('rifaReservationTimestamps', JSON.stringify(reservationTimestamps));
+        }
+        
+        // Verificar reservas expiradas
+        function checkExpiredReservations() {
+            const now = Date.now();
+            let expiredReservations = [];
+            
+            for (const number in reservationTimestamps) {
+                const reservationTime = reservationTimestamps[number];
+                const minutesPassed = (now - reservationTime) / (1000 * 60);
+                
+                if (minutesPassed > RESERVATION_EXPIRY_MINUTES) {
+                    expiredReservations.push(parseInt(number));
+                    delete reservationTimestamps[number];
+                }
+            }
+            
+            if (expiredReservations.length > 0) {
+                // Remover números expirados das reservas
+                reservedNumbers = reservedNumbers.filter(num => !expiredReservations.includes(num));
+                saveData();
+                generateNumbers();
+                updateProgressBar();
+                console.log(`Reservas expiradas liberadas: ${expiredReservations.join(', ')}`);
+            }
+        }
+        
+        // Atualizar barra de progresso
+        function updateProgressBar() {
+            const totalNumbers = END_NUMBER - START_NUMBER + 1;
+            const soldCount = soldNumbers.length;
+            const reservedCount = reservedNumbers.length;
+            const progressPercentage = ((soldCount + reservedCount) / totalNumbers) * 100;
+            
+            progressBar.style.width = `${progressPercentage}%`;
+            progressText.textContent = `${Math.round(progressPercentage)}% dos números já foram vendidos ou reservados!`;
+        }
+        
+        // Gerar os números na grade
+        function generateNumbers() {
+            numbersGrid.innerHTML = '';
+            
+            for (let i = START_NUMBER; i <= END_NUMBER; i++) {
+                const numberElement = document.createElement('div');
+                numberElement.className = 'number';
+                numberElement.textContent = i;
+                numberElement.dataset.number = i;
+                
+                // Verificar se o número está vendido
+                if (soldNumbers.includes(i)) {
+                    numberElement.classList.add('sold');
+                } 
+                // Verificar se o número está reservado
+                else if (reservedNumbers.includes(i)) {
+                    numberElement.classList.add('reserved');
+                } 
+                // Número disponível para seleção
+                else {
+                    numberElement.addEventListener('click', toggleNumberSelection);
+                }
+                
+                numbersGrid.appendChild(numberElement);
+            }
+        }
+        
+        // Alternar seleção de número
+        function toggleNumberSelection(event) {
+            const numberElement = event.currentTarget;
+            const number = parseInt(numberElement.dataset.number);
+            
+            if (numberElement.classList.contains('selected')) {
+                // Desselecionar
+                numberElement.classList.remove('selected');
+                selectedNumbers = selectedNumbers.filter(n => n !== number);
+            } else {
+                // Selecionar
+                numberElement.classList.add('selected');
+                selectedNumbers.push(number);
+            }
+            
+            updateSelectionInfo();
+            validateForm();
+        }
+        
+        // Atualizar informações de seleção
+        function updateSelectionInfo() {
+            selectedCount.textContent = selectedNumbers.length;
+            
+            const total = selectedNumbers.length * PRICE_PER_NUMBER;
+            totalValue.textContent = total.toFixed(2);
+            pixValue.textContent = total.toFixed(2);
+        }
+        
+        // Validar formulário
+        function validateForm() {
+            const hasSelectedNumbers = selectedNumbers.length > 0;
+            const hasName = customerName.value.trim().length > 0;
+            const hasPhone = customerPhone.value.replace(/\D/g, '').length >= 10;
+            
+            buyButton.disabled = !(hasSelectedNumbers && hasName && hasPhone);
+        }
+        
+        // Formatar telefone
+        function formatPhone() {
+            let value = customerPhone.value.replace(/\D/g, '');
+            
+            if (value.length > 11) {
+                value = value.substring(0, 11);
+            }
+            
+            if (value.length <= 10) {
+                value = value.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+            } else {
+                value = value.replace(/(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
+            }
+            
+            customerPhone.value = value;
+        }
+        
+        // Limpar todas as seleções
+        function clearAllSelection() {
+            selectedNumbers = [];
+            
+            // Remover classe 'selected' de todos os números
+            document.querySelectorAll('.number.selected').forEach(element => {
+                element.classList.remove('selected');
+            });
+            
+            updateSelectionInfo();
+            validateForm();
+        }
+        
+        // Processar compra
+        function processPurchase() {
+            if (selectedNumbers.length === 0) {
+                alert('Por favor, selecione pelo menos um número.');
+                return;
+            }
+            
+            if (!customerName.value.trim()) {
+                alert('Por favor, informe seu nome completo.');
+                customerName.focus();
+                return;
+            }
+            
+            if (customerPhone.value.replace(/\D/g, '').length < 10) {
+                alert('Por favor, informe um telefone válido.');
+                customerPhone.focus();
+                return;
+            }
+            
+            // Verificar se algum número selecionado já foi vendido ou reservado
+            const conflictNumbers = selectedNumbers.filter(num => 
+                soldNumbers.includes(num) || reservedNumbers.includes(num)
+            );
+            
+            if (conflictNumbers.length > 0) {
+                alert(`Os seguintes números já não estão disponíveis: ${conflictNumbers.join(', ')}. Por favor, selecione outros números.`);
+                return;
+            }
+            
+            // Ordenar números selecionados
+            selectedNumbers.sort((a, b) => a - b);
+            
+            // Criar mensagem para WhatsApp
+            const message = `Olá! Gostaria de comprar os seguintes números da rifa da L.O.T.S. Aerodesign:\n\n` +
+                           `Números: ${selectedNumbers.join(', ')}\n` +
+                           `Quantidade: ${selectedNumbers.length}\n` +
+                           `Valor total: R$ ${(selectedNumbers.length * PRICE_PER_NUMBER).toFixed(2)}\n\n` +
+                           `Nome: ${customerName.value.trim()}\n` +
+                           `Telefone: ${customerPhone.value}`;
+            
+            // Codificar mensagem para URL
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Reservar os números selecionados
+            reserveNumbers(selectedNumbers);
+            
+            // Abrir WhatsApp
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`, '_blank');
+            
+            // Limpar seleção após a compra
+            clearAllSelection();
+            customerName.value = '';
+            customerPhone.value = '';
+        }
+        
+        // Reservar números (aguardando pagamento)
+        function reserveNumbers(numbers) {
+            const now = Date.now();
+            
+            numbers.forEach(num => {
+                if (!reservedNumbers.includes(num)) {
+                    reservedNumbers.push(num);
+                    reservationTimestamps[num] = now;
+                }
+            });
+            
+            saveData();
+            generateNumbers();
+            updateProgressBar();
+        }
+        
+        // ========== COMANDOS ADMINISTRATIVOS ==========
+        
+        // Marcar números como vendidos
+        window.markNumbersAsSold = function(numbers) {
+            if (!Array.isArray(numbers)) {
+                console.error('Erro: Forneça um array de números. Exemplo: markNumbersAsSold([1, 2, 3])');
+                return;
+            }
+            
+            numbers.forEach(num => {
+                // Remover da lista de reservados
+                reservedNumbers = reservedNumbers.filter(n => n !== num);
+                delete reservationTimestamps[num];
+                
+                // Adicionar à lista de vendidos
+                if (!soldNumbers.includes(num)) {
+                    soldNumbers.push(num);
+                }
+            });
+            
+            saveData();
+            generateNumbers();
+            updateProgressBar();
+            console.log(`Números ${numbers.join(', ')} marcados como VENDIDOS`);
+        }
+        
+        // Marcar números como reservados
+        window.markNumbersAsReserved = function(numbers) {
+            if (!Array.isArray(numbers)) {
+                console.error('Erro: Forneça um array de números. Exemplo: markNumbersAsReserved([1, 2, 3])');
+                return;
+            }
+            
+            const now = Date.now();
+            numbers.forEach(num => {
+                if (!reservedNumbers.includes(num) && !soldNumbers.includes(num)) {
+                    reservedNumbers.push(num);
+                    reservationTimestamps[num] = now;
+                }
+            });
+            
+            saveData();
+            generateNumbers();
+            updateProgressBar();
+            console.log(`Números ${numbers.join(', ')} marcados como RESERVADOS`);
+        }
+        
+        // Liberar números (remover de vendidos/reservados)
+        window.freeNumbers = function(numbers) {
+            if (!Array.isArray(numbers)) {
+                console.error('Erro: Forneça um array de números. Exemplo: freeNumbers([1, 2, 3])');
+                return;
+            }
+            
+            numbers.forEach(num => {
+                // Remover de vendidos
+                soldNumbers = soldNumbers.filter(n => n !== num);
+                
+                // Remover de reservados
+                reservedNumbers = reservedNumbers.filter(n => n !== num);
+                delete reservationTimestamps[num];
+            });
+            
+            saveData();
+            generateNumbers();
+            updateProgressBar();
+            console.log(`Números ${numbers.join(', ')} foram LIBERADOS`);
+        }
+        
+        // Ver todos os números vendidos
+        window.viewAllSold = function() {
+            console.log('NÚMEROS VENDIDOS:', soldNumbers.sort((a, b) => a - b));
+            console.log(`Total: ${soldNumbers.length} números`);
+        }
+        
+        // Ver todos os números reservados
+        window.viewAllReserved = function() {
+            console.log('NÚMEROS RESERVADOS:', reservedNumbers.sort((a, b) => a - b));
+            console.log(`Total: ${reservedNumbers.length} números`);
+        }
+        
+        // Ver todos os números disponíveis
+        window.viewAllAvailable = function() {
+            const allNumbers = Array.from({length: END_NUMBER - START_NUMBER + 1}, (_, i) => START_NUMBER + i);
+            const availableNumbers = allNumbers.filter(num => 
+                !soldNumbers.includes(num) && !reservedNumbers.includes(num)
+            );
+            console.log('NÚMEROS DISPONÍVEIS:', availableNumbers);
+            console.log(`Total: ${availableNumbers.length} números`);
+        }
+        
+        // Limpar reservas expiradas
+        window.cleanExpiredReservations = function() {
+            checkExpiredReservations();
+            console.log('Reservas expiradas limpas');
+        }
+        
+        // Resetar todos os dados
+        window.resetAllData = function() {
+            if (confirm('ATENÇÃO: Isso irá apagar TODOS os dados da rifa. Tem certeza?')) {
+                soldNumbers = [];
+                reservedNumbers = [];
+                reservationTimestamps = {};
+                saveData();
+                generateNumbers();
+                updateProgressBar();
+                console.log('Todos os dados foram resetados');
+            }
+        }
+        
+        // Exportar dados
+        window.exportData = function() {
+            const data = {
+                soldNumbers: soldNumbers,
+                reservedNumbers: reservedNumbers,
+                reservationTimestamps: reservationTimestamps,
+                exportDate: new Date().toISOString()
+            };
+            const jsonData = JSON.stringify(data, null, 2);
+            console.log('DADOS PARA EXPORTAR:');
+            console.log(jsonData);
+            
+            // Criar download do arquivo
+            const blob = new Blob([jsonData], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `rifa_lots_backup_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        // Importar dados
+        window.importData = function(jsonData) {
+            try {
+                const data = JSON.parse(jsonData);
+                soldNumbers = data.soldNumbers || [];
+                reservedNumbers = data.reservedNumbers || [];
+                reservationTimestamps = data.reservationTimestamps || {};
+                
+                saveData();
+                generateNumbers();
+                updateProgressBar();
+                console.log('Dados importados com sucesso!');
+            } catch (error) {
+                console.error('Erro ao importar dados:', error);
+            }
+        }
+        
+        // Inicializar a aplicação
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
